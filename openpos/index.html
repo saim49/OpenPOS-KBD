@@ -15,9 +15,9 @@
         $("#shop-detail").val(localStorage.getItem('shopDetail'));
         $("#itemName").focus();
         
-        /*document.addEventListener("contextmenu", function (e){
+        document.addEventListener("contextmenu", function (e){
             e.preventDefault();
-        }, false);*/
+        }, false);
         
         var inputs = $(':input').keypress(function (e) {
              if (e.which == 13) {
