@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SaimTech</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/paper.css">
+  <script src="js/jquery-3.7.1.min.js"></script>
+  <style>
+    @page { size: portrait }
+    body.receipt .sheet { width: 58mm; height: 50mm }
+    @media print {
+      body.receipt {
+         width: 58mm
+      } 
+    }
+
+    .nopm
+    {
+        padding: 1 1 1 1px;
+        margin: 0 0 1 1px;
+    }
+    
+    .nopmh
+    {
+        padding: 0 0 0 0px;
+        margin: 0 0 0 0px;
+    }
+    
+    .font
+    {
+      font-size: 11px;
+    }
+
+    .font-sm
+    {
+      padding-left: 2px;
+      font-size: 10px;
+    }
+
+    .element {
+      padding-right: 0px;
+      padding-left: 50px;
+}
+  </style>
+</head>
+<script>
+  $( document ).ready(function(){
+     
+    const searchParams  = new URLSearchParams(window.location.search);
+    const d             = new Date().toLocaleString().replace(',','');
+    const invoice       = searchParams.get('invoice');
+    const hostName      = localStorage.getItem('hostName');
+    const invoicesData  = JSON.parse(localStorage.getItem('invoicesData'));
+    var shopName        = "Atta Son's (SaimTech)";
+    var shopDetail      = "A truely pakistani tech brand.";
+    
+    if (localStorage.getItem('shopName'))
+    {
+        shopName        = localStorage.getItem('shopName');
+    }
+    
+    if (localStorage.getItem('shopDetail'))
+    {
+        shopDetail      = localStorage.getItem('shopDetail');
+    }
+
+    $('#invoice-span').text(invoice);
+    for (let i = 0; i <= invoicesData.length; i++) 
+    {
+        var innerArrayData = invoicesData[i];
+        for (let i= 0; i < innerArrayData.length; i++) 
+      {
+              if (innerArrayData[i].invoice_code == invoice) 
+              {
+                  $('#total-amount').text(innerArrayData[i].invoice_total+"/-"); 
+                  $('#discount-amount').text(innerArrayData[i].invoice_discount+"/-"); 
+                  $('#net-amount').text(innerArrayData[i].invoice_net+"/-"); 
+                  $('#paym-span').text(innerArrayData[i].payment_mode); 
+                  $('#customer-span').text(innerArrayData[i].customer);
+                  $('#date-span').text(d);
+                  $('#shop-name-span').text(shopName);
+                  $('#shop-detail-span').text(shopDetail);
+                  
+                  var v_cell1,v_cell2,v_cell3,v_cell4,v_row,v_rowNum, 
+                  v_table;
+                  //-------
+                  $("#bill-table-body").html("");
+                  v_html = "";
+                  //-------
+                  $.each(innerArrayData[i].invoice_lines, function(j, rows) {
+                      v_rowNum 		= j+1;
+                      v_html += "<tr class='font'>";
+                      v_html += "<td><center>"+v_rowNum+"</center></td>";
+                      v_html += "<td class='font-sm'>"+rows.itemName+"</center></td>";
+                      v_html += "<td class='font-sm'>"+rows.price+"</center></td>";
+                      v_html += "<td><center>"+rows.qty+"</center></td>";
+                      v_html += "<td><center>"+rows.disc+"</center></td>";
+                      v_html += "<td><center>"+((Number(rows.qty) * Number(rows.price))-Number(rows.disc))+"/-</td>";
+                      v_html += "</tr>";
+        
+                  });
+                  
+                  $("#bill-table-body").html(v_html);
+                  
+                  window.print();
+                  window.close();
+                  break;
+              }
+            }
+      }
+ 
+  
+  });	
+</script>
+<body class="receipt">
+  <section class="sheet padding-10mm">
+      <hr>
+    <center>
+        <h4 class="nopmh" id="shop-name-span"> Khokhar book depot</h4>
+        <p class="nopmh font" id="shop-detail-span"> Khokhar book depot</p>
+    </center>
+    <hr>
+    <p class="nopm font"><b> Invoice number#:</b> <span id="invoice-span">01-06022024-004</span></p>
+    <p class="nopm font"><b> Date time:</b> <span id="date-span"></span></p>
+    <p class="nopm font"><b> Payment mode:</b> <span id="paym-span"></span></p>
+    <p class="nopm font"><b> Customer detail:</b> <span id="customer-span"></span></p>
+    <table border="1" width="99%" id="bill-table">
+      <thead>
+      <tr>
+        <th class="font" width="8%">Sr</th>
+        <th class="font" width="50%">Item</th>
+        <th class="font" width="15%">Price</th>
+        <th class="font" width="10%">Qty</th>
+        <th class="font" width="10%">Disc</th>
+        <th class="font" width="18%">Total</th>
+      </tr>
+      </thead>
+      <tbody  id="bill-table-body">
+      </tbody>
+      <tfoot>
+        <tr class="font">
+          <th colspan="5" class="element">Total amount</th>
+          <td id="total-amount"><center>10000</center></td>
+        </tr>
+        <tr class="font">
+          <th colspan="5" class="element">Discount amount</th>
+          <td id="discount-amount"><center>0</center></td>
+        </tr>
+        <tr class="font">
+          <th colspan="5" class="element">Net amount</th>
+          <td id="net-amount"><center>9000</center></td>
+        </tr>
+      </tfoot>
+    </table>
+    <center><p class="nopm font-sm"><b>Thank you for shopping.</p></center>
+    <hr>
+    <center><p class="nopm font"><b>Atta son's (Saimtech)</p></center>
+  </section>
+</body>

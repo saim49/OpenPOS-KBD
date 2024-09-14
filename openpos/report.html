@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Table</title>
+    <link rel="stylesheet" href="css/css@3.css" rel="stylesheet" >
+    <link href="css/sweet-alert.css" rel="stylesheet" >
+    <link href="css/bootstrap.min.css" rel="stylesheet" >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    
+    <!-- Favicons -->
+    <meta name="theme-color" content="#712cf9">
+    <link rel="stylesheet" href="css/all.min.css" rel="stylesheet"  />
+    
+    <style>
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin: 2 2 2 2px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+            font-size: 12px;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-size: 12px;
+        }
+    </style>
+    <script src="customjs/html2excel.js"></script>
+</head>
+<body>
+<div class="table-responsive">
+<button class="btn btn-success btn-sm mt-1 mb-1" onclick="exportToExcel('invoiceTable', 'invoice_data')">Export to Excel</button>
+<center>
+<table id="invoiceTable"  class="table table-striped">
+    <thead>
+        <tr>
+            <th width="12%">Invoice Code</th>
+            <th width="17%">Date</th>
+            <th width="8%">Payment</th>
+            <th width="7%">Customer</th>
+            <th width="17%">Product</th>
+            <th width="8%">Price</th>
+            <th width="7%">Quantity</th>
+            <th width="7%">Discount</th>
+            <th width="7%">Net</th>
+        </tr>
+    </thead>
+    <tbody id="invoiceTableBody">
+    </tbody>
+</table>
+</center>
+</div>
+
+
+<script>
+    const invoicesData = JSON.parse(localStorage.getItem('invoicesData'));
+    const tableBody = document.getElementById('invoiceTableBody');
+    const d         = new Date().toLocaleString().replace(',','');
+    invoicesData.forEach(invoiceArray => {
+        invoiceArray.forEach(invoice => {
+            invoice.invoice_lines.forEach(line => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${invoice.invoice_code}</td>
+                    <td>${invoice.invoice_date}</td>
+                    <td>${invoice.payment_mode}</td>
+                    <td>${invoice.customer || ''}</td>
+                    <td>${line.itemName}</td>
+                    <td>${line.price}/-</td>
+                    <td>${line.qty}</td>
+                    <td>${line.disc}/-</td>
+                    <td>${line.net}/-</td>
+                    
+                `;
+                tableBody.appendChild(row);
+            });
+        });
+    });
+
+    function exportToExcel(tableID, filename = '') {
+        const d   = new Date().toLocaleString().replace(',','_');
+        filename  = 'saimtech_invoices_data_'+d;
+        var table = document.getElementById(tableID);
+        var workbook = XLSX.utils.table_to_book(table, { sheet: "Invoices Data" });
+        var wopts = { bookType: 'xlsx', bookSST: true, type: 'binary' };
+
+        var wbout = XLSX.write(workbook, wopts);
+
+        function s2ab(s) {
+            var buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        }
+
+        var blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+
+        var link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename ? filename + '.xlsx' : 'saimtech_open_pos_invoice_data.xlsx';
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+    }
+</script>
+<script src="js/popperjs.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>

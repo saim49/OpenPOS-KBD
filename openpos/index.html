@@ -1,0 +1,619 @@
+<html lang="en" data-bs-theme="dark">
+  <script src="js/jquery-3.7.1.min.js"></script>
+  <script src="js/sweet-alert.js"></script>
+  <script src="customjs/commonUtil.js"></script>
+  <link rel="stylesheet" href="css/jquery-ui.css">
+  <script src="js/jquery-3.6.0.min.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
+  <script>
+    $( document ).ready(function(){
+        zeroNodeDefaultData();
+        setInterval(updateDateTimeNavSpan, 100);
+        getUniqueCode();
+        $("#memory-status").val(getLocalStorageSize());
+        $("#shop-name").val(localStorage.getItem('shopName'));
+        $("#shop-detail").val(localStorage.getItem('shopDetail'));
+        $("#itemName").focus();
+        
+        /*document.addEventListener("contextmenu", function (e){
+            e.preventDefault();
+        }, false);*/
+        
+        var inputs = $(':input').keypress(function (e) {
+             if (e.which == 13) {
+                 e.preventDefault();
+                 var nextInput = inputs.get(inputs.index(this) + 1);
+                 if (nextInput) {
+                     nextInput.focus();
+                 }
+             }
+         });
+         
+        //-----Create Bill Shortcut  
+        document.addEventListener("keydown", 
+            function (event) { 
+                if ((event.key === "b" || event.key === "B") && event.ctrlKey) { 
+                    event.preventDefault(); 
+                    createSimpleBill();
+                } 
+                else
+                if ((event.key === "5" || event.key === "%") && event.ctrlKey)
+                {
+                    $("#disc-percentage").val("Yes");
+                }
+            }
+        ); 
+    
+    //--------------------------------------
+    const availableTags = JSON.parse(localStorage.getItem('itemData'));
+
+        $('#itemName').autocomplete({
+            source: function(request, response) {
+                // Custom filter to search within any part of the string, case-insensitive
+                const term = $.trim(request.term.toLowerCase());
+                const results = availableTags.filter(item => 
+                    item.name.toLowerCase().includes(term)
+                );
+                response(results);
+            },
+            minLength: 1, // Minimum characters before suggestions show
+            focus: function(event, ui) {
+                // Prevent the input value from being replaced on focus
+                event.preventDefault();
+                $('#itemName').val(ui.item.name);
+            },
+            select: function(event, ui) {
+                // Set the selected item’s label in the input field
+                $('#itemName').val(ui.item.name);
+                $('#price').val(ui.item.price);
+                simpleBillLineNet();
+                $('#qty').focus();
+                return false;
+            }
+        })
+        .autocomplete("instance")._renderItem = function(ul, item) {
+            // Custom rendering for the autocomplete items
+            return $("<li>")
+                .append("<div><strong>" + item.name + "</strong><br><small>Price: " + item.price + " | Discount: " + item.disc + "%</small></div>")
+                .appendTo(ul);
+        };
+    //--------------------------------------
+      });
+  </script>
+  
+  <script id="allow-copy_script">(function agent() {
+    let unlock = false
+    document.addEventListener('allow_copy', (event) => {
+      unlock = event.detail.unlock
+    })
+
+    const copyEvents = [
+      'copy',
+      'cut',
+      'contextmenu',
+      'selectstart',
+      'mousedown',
+      'mouseup',
+      'mousemove',
+      'keydown',
+      'keypress',
+      'keyup',
+    ]
+    const rejectOtherHandlers = (e) => {
+      if (unlock) {
+        e.stopPropagation()
+        if (e.stopImmediatePropagation) e.stopImmediatePropagation()
+      }
+    }
+    copyEvents.forEach((evt) => {
+      document.documentElement.addEventListener(evt, rejectOtherHandlers, {
+        capture: true,
+      })
+    })
+  })()</script><head><script src="js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SaimTech">
+    <meta name="author" content="Muhammad Saim">
+    <meta name="generator" content="SaimTech">
+    <title>Open POS</title>
+    <link rel="stylesheet" href="css/css@3.css" rel="stylesheet" >
+    <link href="css/sweet-alert.css" rel="stylesheet" >
+    <link href="css/bootstrap.min.css" rel="stylesheet" >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    
+    <!-- Favicons -->
+    <meta name="theme-color" content="#712cf9">
+    <link rel="stylesheet" href="css/all.min.css" rel="stylesheet"  />
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      
+      ::-ms-input-placeholder { /* Edge 12-18 */
+  color: rgb(7, 7, 7);
+}
+
+::placeholder {
+  color: rgb(0, 0, 0);
+}
+
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
+      
+      /* Basic styling */
+        .autocomplete-suggestions {
+            border: 1px solid #d4d4d4;
+            max-height: 150px;
+            overflow-y: auto;
+            position: absolute;
+            background-color: white;
+            z-index: 99;
+        }
+        .autocomplete-suggestion {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .autocomplete-suggestion:hover {
+            background-color: #e9e9e9;
+        }
+
+        .ui-autocomplete {
+    max-height: 200px; /* Set the maximum height of the suggestions box */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    padding-right: 20px; /* Space for scrollbar to not overlap text */
+    z-index: 1000; /* Ensure the suggestions appear above other elements */
+    background-color: #ffffff; /* Optional: set background color */
+    border: 1px solid #d4d4d4; /* Optional: set border */
+}
+    </style>
+
+    
+
+  </head>
+  <body class="bg-body-tertiary" data-new-gr-c-s-check-loaded="14.1171.0" data-gr-ext-installed="">
+
+
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+      <symbol id="check2" viewBox="0 0 16 16">
+        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path>
+      </symbol>
+      <symbol id="circle-half" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"></path>
+      </symbol>
+      <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"></path>
+        <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"></path>
+      </symbol>
+      <symbol id="sun-fill" viewBox="0 0 16 16">
+        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"></path>
+      </symbol>
+    </svg>
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+      <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+              id="bd-theme"
+              type="button"
+              aria-expanded="false"
+              data-bs-toggle="dropdown"
+              aria-label="Toggle theme (auto)">
+        <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
+        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#sun-fill"></use></svg>
+            Light
+            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
+            Dark
+            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#circle-half"></use></svg>
+            Auto
+            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    
+<div >
+  <main>
+    <div class="d-flex gap-2 justify-content-center py-2 bg-black border border-success-subtle">
+      <button class="btn btn-primary rounded-pill px-3" type="button"  data-bs-toggle="modal" data-bs-target="#syncItemModel">
+        <svg xmlns="icons/cash.svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
+          <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+        </svg>
+        Sync Items
+      </button>
+      <button class="btn btn-success rounded-pill px-3" type="button" onclick="openPOS()">
+        <svg xmlns="icons/receipt-cutoff.svg" width="16" height="16" fill="currentColor" class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
+          <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5M11.5 4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
+          <path d="M2.354.646a.5.5 0 0 0-.801.13l-.5 1A.5.5 0 0 0 1 2v13H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H15V2a.5.5 0 0 0-.053-.224l-.5-1a.5.5 0 0 0-.8-.13L13 1.293l-.646-.647a.5.5 0 0 0-.708 0L11 1.293l-.646-.647a.5.5 0 0 0-.708 0L9 1.293 8.354.646a.5.5 0 0 0-.708 0L7 1.293 6.354.646a.5.5 0 0 0-.708 0L5 1.293 4.354.646a.5.5 0 0 0-.708 0L3 1.293zm-.217 1.198.51.51a.5.5 0 0 0 .707 0L4 1.707l.646.647a.5.5 0 0 0 .708 0L6 1.707l.646.647a.5.5 0 0 0 .708 0L8 1.707l.646.647a.5.5 0 0 0 .708 0L10 1.707l.646.647a.5.5 0 0 0 .708 0L12 1.707l.646.647a.5.5 0 0 0 .708 0l.509-.51.137.274V15H2V2.118z"/>
+        </svg>
+        New bill windows
+      </button>
+      <button class="btn btn-danger rounded-pill px-3" type="button"  data-bs-toggle="modal" data-bs-target="#printSettingModel">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rulers" viewBox="0 0 16 16">
+            <path d="M1 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5v-1H2v-1h4v-1H4v-1h2v-1H2v-1h4V9H4V8h2V7H2V6h4V2h1v4h1V4h1v2h1V2h1v4h1V4h1v2h1V2h1v4h1V1a1 1 0 0 0-1-1z"/>
+          </svg>
+          Bill setting
+      </button>
+        <button class="btn btn-light rounded-pill px-3" type="button"  data-bs-toggle="modal" data-bs-target="#reportModel">
+        <svg xmlns="icons/receipt-cutoff.svg" width="16" height="16" fill="currentColor" class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
+          <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5M11.5 4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
+          <path d="M2.354.646a.5.5 0 0 0-.801.13l-.5 1A.5.5 0 0 0 1 2v13H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H15V2a.5.5 0 0 0-.053-.224l-.5-1a.5.5 0 0 0-.8-.13L13 1.293l-.646-.647a.5.5 0 0 0-.708 0L11 1.293l-.646-.647a.5.5 0 0 0-.708 0L9 1.293 8.354.646a.5.5 0 0 0-.708 0L7 1.293 6.354.646a.5.5 0 0 0-.708 0L5 1.293 4.354.646a.5.5 0 0 0-.708 0L3 1.293zm-.217 1.198.51.51a.5.5 0 0 0 .707 0L4 1.707l.646.647a.5.5 0 0 0 .708 0L6 1.707l.646.647a.5.5 0 0 0 .708 0L8 1.707l.646.647a.5.5 0 0 0 .708 0L10 1.707l.646.647a.5.5 0 0 0 .708 0L12 1.707l.646.647a.5.5 0 0 0 .708 0l.509-.51.137.274V15H2V2.118z"/>
+        </svg>
+          Sale report
+      </button>
+      <button class="btn btn-warning rounded-pill px-3" type="button" onclick="location.reload(true);">
+        <svg xmlns="icons/cash.svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
+          <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+        </svg>
+        Refresh open POS
+      </button>
+      <button class="btn btn-primary rounded-pill px-3" type="button"  data-bs-toggle="modal" data-bs-target="#dbSyncModel" onclick="getInvoiceCount();">
+      <svg xmlns="icons/question-square.svg" width="16" height="16" fill="currentColor" class="bi bi-question-square" viewBox="0 0 16 16">
+          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+          <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+        </svg>
+          Cloud Services
+      </button>
+      <button class="btn btn-success rounded-pill px-3" type="button"  data-bs-toggle="modal" data-bs-target="#aboutModel">
+      <svg xmlns="icons/question-square.svg" width="16" height="16" fill="currentColor" class="bi bi-question-square" viewBox="0 0 16 16">
+          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+          <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+        </svg>
+          About Us
+      </button>
+    </div>
+    <marquee class="bg-success text-white"><b> Atta Son's (SaimTech)</b> Empowering businesses with simple, intuitive, and free POS solutions. At Atta Son's (SaimTech), we understand the challenges that business owners face daily. That's why we've developed a robust POS system designed to streamline your processes, enhance your customer service, and boost your sales—all without the hefty price tag. Our software is tailored to meet the unique needs of various industries, from retail stores and restaurants to service providers and beyond.</marquee>
+    <div class="row g-5 py-1 mx-2">
+      <div class="col-md-4 col-lg-3 order-md-last  py-1">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-calculator" viewBox="0 0 16 16">
+              <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+              <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/>
+            </svg> Total</span> 
+        </h4>
+        <ul class="list-group mb-3">
+        
+          
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (PKR)</span>
+            <strong id="li-total-amount">0</strong>
+          </li>
+          <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+            <div class="text-success">
+              <h6 class="my-0">Discount (PKR)</h6>
+            </div>
+            <span class="text-success" id="li-discount-amount">0</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between fs-4">
+            <span>Net (PKR)</span>
+            <strong>Rs.<mark id='li-net-amount'>0</mark>/-</strong>
+          </li>
+          <li class="list-group-item d-flex justify-content-between bg-body-tertiary"></li>
+          <li class="list-group-item d-flex justify-content-between fs-4">
+            <select class="form-control" id="li-payment-mode">
+              <option value="Cash">Payment mode - cash</option>
+              <option value="Card">Payment mode - card</option>
+              <option value="Bank">Payment mode - bank</option>
+              <option value="Other">Payment mode - other</option>
+            </select>
+          </li>
+          <li class="list-group-item d-flex justify-content-between fs-4">
+            <input type="text" class="form-control" id="li-customer-data" placeholder="Enter customer detail">
+          </li>
+        </ul>
+
+        <form class="card p-2">
+         
+          <button class="btn btn-success" type="button" onclick="createSimpleBill();">
+            <svg xmlns="icons/cash.svg" width="16" height="16" fill="currentColor" class="bi bi-cash" viewBox="0 0 16 16">
+              <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+              <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2z"/>
+            </svg>
+             Payment | cash or bank </button>
+
+        </form>
+        <center><img src="icons/ads-us.jpeg" width='256px'></center>
+      </div>
+      <div class="col-md-8 col-lg-9 py-1">
+       <h4 class="mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
+        <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5M11.5 4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
+        <path d="M2.354.646a.5.5 0 0 0-.801.13l-.5 1A.5.5 0 0 0 1 2v13H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H15V2a.5.5 0 0 0-.053-.224l-.5-1a.5.5 0 0 0-.8-.13L13 1.293l-.646-.647a.5.5 0 0 0-.708 0L11 1.293l-.646-.647a.5.5 0 0 0-.708 0L9 1.293 8.354.646a.5.5 0 0 0-.708 0L7 1.293 6.354.646a.5.5 0 0 0-.708 0L5 1.293 4.354.646a.5.5 0 0 0-.708 0L3 1.293zm-.217 1.198.51.51a.5.5 0 0 0 .707 0L4 1.707l.646.647a.5.5 0 0 0 .708 0L6 1.707l.646.647a.5.5 0 0 0 .708 0L8 1.707l.646.647a.5.5 0 0 0 .708 0L10 1.707l.646.647a.5.5 0 0 0 .708 0L12 1.707l.646.647a.5.5 0 0 0 .708 0l.509-.51.137.274V15H2V2.118z"/>
+      </svg>
+      Invoice# <span id="invoice-number">1000012358</span></h4>
+       <div class="table-responsive">
+       <div class='text-end'><span id="nav-span" ></span></div>
+       <table class="table table-hover table-bordered ">
+        <thead>
+          <tr class="font-size-sm">
+            <th scope="col" width="45%" colspan="2">Item </th>
+            <th scope="col" width="12%">Price</th>
+            <th scope="col" width="12%">Qty</th>
+            <th scope="col" width="12%">Disc</th>
+            <th scope="col" width="12%">Net</th>
+            <th scope="col" width="5%">Action</th>
+          </tr>
+          <tr class="table-secondary">
+            <td scope="row" colspan="2">
+                <input type="text"  placeholder="Enter item" class="form-control" id="itemName" tabindex="1">
+            </td>
+            <td><input type="number" class="form-control" id="price" placeholder="Price" tabindex="2" onkeyup="simpleBillLineNet();"></td>
+            <td><input type="number" class="form-control" id="qty" placeholder="Qty" tabindex="3" onkeyup="simpleBillLineNet();"></td>
+            <td><input type="number" class="form-control" id="disc" placeholder="Disc" tabindex="4" onkeyup="simpleBillLineNet();" onkeydown="triggerSaveLineBtn();"><input type="hidden" value="No" id="disc-percentage"></td>
+            <td><input type="number" readonly="readonly"  id="net" class="form-control"  placeholder="Net"></td>
+            <td>
+              <button class="btn btn-success rounded-pill btn-sm px-3" type="button" tabindex="5" id="saveLineBtn"  onclick="simpleSaveBillLine();" onkeydown="triggerSaveLineBtn();">
+                <svg xmlns="icons/bag-check.svg" width="18" height="18" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                  <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </thead>
+       </table>
+       <table class="table table-hover table-bordered " id="myLineTable">	
+        <thead>
+          <tr class="fs-6">
+            <th scope="col" width="5%">Sr </th>
+            <th scope="col" width="40%">Item </th>
+            <th scope="col" width="8%">Price</th>
+            <th scope="col" width="8%">Qty</th>
+            <th scope="col" width="10%">Disc %</th>
+            <th scope="col" width="14%">Disc Amt</th>
+            <th scope="col" width="10%">Net</th>
+            <th scope="col" width="5%">Action</th>
+          </tr>
+        </thead>        
+        <tbody class="table-group-divider" id="lineRows">
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+</div>
+
+<!-- about Modal -->
+<div class="modal fade" id="aboutModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">About Us</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h1>About Us</h1>
+        <p>Welcome to Atta Son's (SaimTech), where we believe that running a business should be simple and hassle-free. Our mission is to empower small and medium-sized businesses with innovative, easy-to-use, and free Point of Sale (POS) software that transforms the way you manage your operation.</p> 
+        <p>At Atta Son's (SaimTech), we understand the challenges that business owners face daily. That's why we've developed a robust POS system designed to streamline your processes, enhance your customer service, and boost your sales—all without the hefty price tag. Our software is tailored to meet the unique needs of various industries, from retail stores and restaurants to service providers and beyond.</p>
+        <p>What sets us apart?</p>
+        <h4>Simplicity:</h4>
+        <p>Our intuitive interface ensures that you and your staff can start using our POS system with minimal training. We prioritize ease of use, so you can focus on what matters most—growing your business.</p>
+        <h4>Accessibility:</h4>
+        <p>As a cloud-based solution, our POS software allows you to access your business data anytime, anywhere. Whether you're at the counter, on the go, or working from home, you have complete control at your fingertips.</p>
+        <h4>Cost-Free Solution:</h4>
+        <p>We believe that every business, regardless of size, deserves access to top-tier tools. That's why our POS software is completely free, with no hidden fees or surprise charges.</p>
+        <p>At Atta Son's (SaimTech), we are passionate about innovation and customer satisfaction. Join thousands of businesses that have already transformed their operations with our simple and easy POS software. Experience the difference and take your business to new heights.</p>
+        <p>Thank you for choosing Atta Son's (SaimTech). Together, we are making business management simpler, one transaction at a time.</p>
+       </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Login Modal -->
+<div class="modal fade" id="printSettingModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header bg-success">
+        <h5 class="modal-title text-white" id="staticBackdropLabel">Print Setting</h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+             <progress id="memory-status" value="32" max="10485760"></progress>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Shop name</label>
+            <input type="text" class="form-control" id="shop-name">
+            </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Shop address / phone</label>
+            <input type="text" class="form-control" id="shop-detail">
+          </div>
+          <button type="button" class="btn btn-success" onclick="saveShopDetail()">Save Detail</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Report Modal -->
+<div class="modal fade" id="reportModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Sales Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <center><iframe id="modalIframe" src="report.html" width="95%" height="500px"></iframe></center>
+     </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- DB Sync Modal -->
+<div class="modal fade" id="dbSyncModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Data on Cloud</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h1>Sync Your Valuable Data on Saimtech Cloud – The World's Safest and Most Economical Choice</h1>
+        <p>In today’s digital age, safeguarding your data is paramount. With Saimtech Cloud, you can trust that your information is protected by world-class security measures, ensuring that your data remains safe and secure. Not only does Saimtech Cloud provide top-tier protection, but it also offers these services at the most economical rates in the industry.</p>
+        <p>Whether you’re a business looking to safeguard critical data or an individual seeking a secure storage solution, Saimtech Cloud delivers reliability and peace of mind. Don’t compromise on safety—sync your prestigious data with Saimtech Cloud today and experience unparalleled security at unbeatable prices.</p> 
+        <div class='table-responsive'>
+        <table class="table table-bordered">
+        <thead>    
+        <tr>
+            <th width="37"><center>Your Device Storage</center></th>
+            <th width="26"><center>Cloud Key</center></th>
+            <th width="37"><center>Cloud Sync Status</center></th>
+        </tr>
+        </thead>
+        <tbody>
+         <tr>
+            <td><center><span id="device-status"></span></center></td>  
+            <td><center><input type="text" placeholder='Enter cloud key' id="cloud-key" class="form-control"></center></td>  
+            <td id="cloud-status"><center></center></td>  
+         </tr>
+         </tbody>
+        </table>    
+        </div>
+        <br>
+        <p>Click here to securely sync your valuable data to the cloud.  
+        <button class="btn btn-success btn-lg" onclick="syncLocalStorageBills()">Synchronize Data</button></p>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Item Sync Modal -->
+<div class="modal fade" id="syncItemModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Synchronization Items</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h1>Get Item From Server:</h1>
+        <p>The server-side item on your computer is synchronized. Internet access is necessary for this operation. </p> 
+        <button type="button" onclick="getItemList()" id="item-sync-btn" class="btn btn-primary"> 
+          Synchronization</button>
+       <hr>
+       
+       <div class="table-responsive">
+        <h3>Synchronizated Item List</h3>
+        <table class="table table-bordered table-striped" id="item-sync-table">
+          <thead>
+            <tr class="font-size-sm table-success">
+              <th width="10%"><center>Sr</center></th>
+              <th width="40%"><center>Item</center></th>
+              <th width="25%"><center>Sale Price</center></th>
+              <th width="25%"><center>Discount%</center></th>
+            </tr>
+          </thead>
+          <tbody id="item-lines-model">
+          </tbody>
+        </table>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/popperjs.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+<grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+</html>
+
+

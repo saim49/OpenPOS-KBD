@@ -1,0 +1,98 @@
+<!-- /templates/page.liquid -->
+<style>
+  #PageContainer {
+    background-color: {{ settings.card_bg }};
+}
+</style>
+
+<div class="grid--full section__standard-spacing--even">
+  <div class="grid__item large--two-thirds push--large--one-sixth">
+    <h2 class="page-title">{{ page.title }}</h2>
+    {% comment %}
+    Regular page content goes here.
+    {% endcomment %}
+    <div class="rte page-text">
+     
+      
+      <div class="collection-page__loop-wrapper" id="productOutput">
+    <div class="collection-page__loop">
+          <div class="collection-page__product collection-page__product--one-third">
+            <!-- /snippets/product-loop-item.liquid -->
+<style>
+
+</style>
+<style>
+  
+  
+  
+    # {
+      max-width: px;
+      max-height: px;
+    }
+    # {
+      max-width: px;
+      max-height: px;
+    }
+  
+  
+  
+</style>
+
+
+
+
+
+
+
+
+
+<div class="card-background featured-collection__product-border-collection-template card-shadow">
+<div class="product-loop-element ">
+    
+    <div class="product-loop__image-container  product-loop__image-container--height-restriction product-loop__image-container--height-300--width-one-third  ">
+         
+        <span class="icon icon-sale" aria-hidden="true"></span>
+<span class="fallback-text"></span>
+
+   
+    <div class="product-badge product-badge--"><span class="sale-badge sale-badge--circle p--small p--bold"><span class="product-badge__circle-text">Sale</span></span></div>
+  
+
+
+
+        <img class="product-loop__img-collection-template lazyautosizes lazyloaded" src="//cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_250x.jpg?v=1603981775" data-parent-fit="cover" data-widths="[250, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="0.628" data-sizes="auto" alt="Black &amp; Tan DayPack" data-srcset="//cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_250x.jpg?v=1603981775 250w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_360x.jpg?v=1603981775 360w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_540x.jpg?v=1603981775 540w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_720x.jpg?v=1603981775 720w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_900x.jpg?v=1603981775 900w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_1080x.jpg?v=1603981775 1080w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_1296x.jpg?v=1603981775 1296w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_1512x.jpg?v=1603981775 1512w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_1728x.jpg?v=1603981775 1728w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_2048x.jpg?v=1603981775 2048w" sizes="294px" srcset="//cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_250x.jpg?v=1603981775 250w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_360x.jpg?v=1603981775 360w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_540x.jpg?v=1603981775 540w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_720x.jpg?v=1603981775 720w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_900x.jpg?v=1603981775 900w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_1080x.jpg?v=1603981775 1080w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_1296x.jpg?v=1603981775 1296w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_1512x.jpg?v=1603981775 1512w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_1728x.jpg?v=1603981775 1728w, //cdn.shopify.com/s/files/1/0481/7803/6887/products/bag1_2048x.jpg?v=1603981775 2048w">
+      
+        <a class="btn product-loop__quickview medium-down--hide p-link--no-accent " data-fancybox="" data-type="ajax" data-src="https://www.onedegree.com.pk/products/bag-z05" data-filter="#quick" href="javascript:;">
+          Quick View
+        </a>
+      
+        <a class="product-loop__image-link" href="/collections/bags/products/bag-z05"></a>
+    </div>
+      <div class="product-loop-element__details ">
+        <p class="product-loop_title p--bold ">
+          <a class="p-link--no-accent" href="/collections/bags/products/bag-z05">Black &amp; Tan DayPack</a>
+          
+        </p><div class="product-loop-element__price ">
+          
+            
+            
+        <p><span class="p--padding-right p--accent p--bold p--small">Rs.8,000.00</span><span class="p--padding-right p--crossed-out p--bold p--small p--faded">Rs.10,000.00  </span></p>     
+          
+        </div><div class="product-loop-element__swatch"></div></div>
+  </div>
+</div>
+          </div>
+        
+        
+
+    </div>
+    
+  </div>
+      
+      
+      {{ page.content }}
+    </div>
+  </div> 
+</div>
+
+
