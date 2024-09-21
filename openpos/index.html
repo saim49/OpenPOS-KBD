@@ -15,9 +15,9 @@
         $("#shop-detail").val(localStorage.getItem('shopDetail'));
         $("#itemName").focus();
         
-        document.addEventListener("contextmenu", function (e){
+        /*document.addEventListener("contextmenu", function (e){
             e.preventDefault();
-        }, false);
+        }, false); */
         
         var inputs = $(':input').keypress(function (e) {
              if (e.which == 13) {
@@ -66,6 +66,7 @@
                 // Set the selected item’s label in the input field
                 $('#itemName').val(ui.item.name);
                 $('#price').val(ui.item.price);
+                $('#price').prop('readonly', true);
                 simpleBillLineNet();
                 $('#qty').focus();
                 return false;
@@ -117,7 +118,7 @@
     <meta name="description" content="SaimTech">
     <meta name="author" content="Muhammad Saim">
     <meta name="generator" content="SaimTech">
-    <title>Open POS</title>
+    <title>Dynamic Open POS</title>
     <link rel="stylesheet" href="css/css@3.css" rel="stylesheet" >
     <link href="css/sweet-alert.css" rel="stylesheet" >
     <link href="css/bootstrap.min.css" rel="stylesheet" >
@@ -304,24 +305,13 @@
 <div >
   <main>
     <div class="d-flex gap-2 justify-content-center py-2 bg-black border border-success-subtle">
-      <button class="btn btn-primary rounded-pill px-3" type="button"  data-bs-toggle="modal" data-bs-target="#syncItemModel">
-        <svg xmlns="icons/cash.svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
-          <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
-        </svg>
-        Sync Items
-      </button>
+     
       <button class="btn btn-success rounded-pill px-3" type="button" onclick="openPOS()">
         <svg xmlns="icons/receipt-cutoff.svg" width="16" height="16" fill="currentColor" class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
           <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5M11.5 4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
           <path d="M2.354.646a.5.5 0 0 0-.801.13l-.5 1A.5.5 0 0 0 1 2v13H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H15V2a.5.5 0 0 0-.053-.224l-.5-1a.5.5 0 0 0-.8-.13L13 1.293l-.646-.647a.5.5 0 0 0-.708 0L11 1.293l-.646-.647a.5.5 0 0 0-.708 0L9 1.293 8.354.646a.5.5 0 0 0-.708 0L7 1.293 6.354.646a.5.5 0 0 0-.708 0L5 1.293 4.354.646a.5.5 0 0 0-.708 0L3 1.293zm-.217 1.198.51.51a.5.5 0 0 0 .707 0L4 1.707l.646.647a.5.5 0 0 0 .708 0L6 1.707l.646.647a.5.5 0 0 0 .708 0L8 1.707l.646.647a.5.5 0 0 0 .708 0L10 1.707l.646.647a.5.5 0 0 0 .708 0L12 1.707l.646.647a.5.5 0 0 0 .708 0l.509-.51.137.274V15H2V2.118z"/>
         </svg>
         New bill windows
-      </button>
-      <button class="btn btn-danger rounded-pill px-3" type="button"  data-bs-toggle="modal" data-bs-target="#printSettingModel">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rulers" viewBox="0 0 16 16">
-            <path d="M1 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5v-1H2v-1h4v-1H4v-1h2v-1H2v-1h4V9H4V8h2V7H2V6h4V2h1v4h1V4h1v2h1V2h1v4h1V4h1v2h1V2h1v4h1V1a1 1 0 0 0-1-1z"/>
-          </svg>
-          Bill setting
       </button>
         <button class="btn btn-light rounded-pill px-3" type="button"  data-bs-toggle="modal" data-bs-target="#reportModel">
         <svg xmlns="icons/receipt-cutoff.svg" width="16" height="16" fill="currentColor" class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
@@ -341,7 +331,7 @@
           <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
           <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
         </svg>
-          Cloud Services
+          Settings
       </button>
       <button class="btn btn-success rounded-pill px-3" type="button"  data-bs-toggle="modal" data-bs-target="#aboutModel">
       <svg xmlns="icons/question-square.svg" width="16" height="16" fill="currentColor" class="bi bi-question-square" viewBox="0 0 16 16">
@@ -490,35 +480,6 @@
   </div>
 </div>
 
-
-<!-- Login Modal -->
-<div class="modal fade" id="printSettingModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-fullscreen">
-    <div class="modal-content">
-      <div class="modal-header bg-success">
-        <h5 class="modal-title text-white" id="staticBackdropLabel">Print Setting</h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-             <progress id="memory-status" value="32" max="10485760"></progress>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Shop name</label>
-            <input type="text" class="form-control" id="shop-name">
-            </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Shop address / phone</label>
-            <input type="text" class="form-control" id="shop-detail">
-          </div>
-          <button type="button" class="btn btn-success" onclick="saveShopDetail()">Save Detail</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
 <!-- Report Modal -->
 <div class="modal fade" id="reportModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
@@ -541,70 +502,84 @@
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Data on Cloud</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Settings</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <h1>Sync Your Valuable Data on Saimtech Cloud – The World's Safest and Most Economical Choice</h1>
-        <p>In today’s digital age, safeguarding your data is paramount. With Saimtech Cloud, you can trust that your information is protected by world-class security measures, ensuring that your data remains safe and secure. Not only does Saimtech Cloud provide top-tier protection, but it also offers these services at the most economical rates in the industry.</p>
-        <p>Whether you’re a business looking to safeguard critical data or an individual seeking a secure storage solution, Saimtech Cloud delivers reliability and peace of mind. Don’t compromise on safety—sync your prestigious data with Saimtech Cloud today and experience unparalleled security at unbeatable prices.</p> 
-        <div class='table-responsive'>
-        <table class="table table-bordered">
-        <thead>    
-        <tr>
-            <th width="37"><center>Your Device Storage</center></th>
-            <th width="26"><center>Cloud Key</center></th>
-            <th width="37"><center>Cloud Sync Status</center></th>
-        </tr>
-        </thead>
-        <tbody>
-         <tr>
-            <td><center><span id="device-status"></span></center></td>  
-            <td><center><input type="text" placeholder='Enter cloud key' id="cloud-key" class="form-control"></center></td>  
-            <td id="cloud-status"><center></center></td>  
-         </tr>
-         </tbody>
-        </table>    
+        <h1>System Settings</h1>
+        <p>In this section, configure system-wide settings, including display options, storage preferences, and backup schedules.</p>
+        <div class="d-flex align-items-start">
+          <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link btn-lg border-bottom active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-item" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Item settting</button>
+            <button class="nav-link border-bottom" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-sync-bill" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Sync setting</button>
+            <button class="nav-link border-bottom" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-print-settings" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Print setting</button>
+          </div>
+          <div class="tab-content border-start" id="v-pills-tabContent">
+            <div class="tab-pane ms-2 fade show active" id="v-pills-item" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
+              <h1>Get item from server:</h1>
+              <p>The server-side item on your computer is synchronized. Internet access is necessary for this operation. </p> 
+              <button type="button" onclick="getItemList()" id="item-sync-btn" class="btn btn-success"> 
+              Synchronization</button>
+              <hr>
+              <div class="table-responsive">
+                <h3>Synchronizated Item List</h3>
+                <table class="table table-bordered table-striped" id="item-sync-table">
+                  <thead>
+                    <tr class="font-size-sm table-success">
+                      <th width="10%"><center>Sr</center></th>
+                      <th width="40%"><center>Item</center></th>
+                      <th width="25%"><center>Sale Price</center></th>
+                      <th width="25%"><center>Discount%</center></th>
+                    </tr>
+                  </thead>
+                  <tbody id="item-lines-model">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-------->
+            <div class="tab-pane ms-2 fade" id="v-pills-sync-bill" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+            <h1>Sync data on cloud :</h1>
+            <p>Sync Your Valuable Data on Saimtech Cloud - The World's Safest and Most Economical Choice</p>
+            <div class='table-responsive'>
+              <table class="table table-bordered">
+                <thead>    
+                  <tr>
+                  <th width="37"><center>Your Device Storage</center></th>
+                  <th width="26"><center>Cloud Key</center></th>
+                  <th width="37"><center>Cloud Sync Status</center></th>
+                  </tr>
+                </thead>
+                <tbody>
+                <tr>
+                <td><center><span id="device-status"></span></center></td>  
+                <td><center><input type="text" placeholder='Enter cloud key' id="cloud-key" class="form-control"></center></td>  
+                <td id="cloud-status"><center></center></td>  
+                </tr>
+                </tbody>
+              </table>    
+            </div>
+            <br>
+            <p>Click here to securely sync your valuable data to the cloud.  
+            <button class="btn btn-success btn-lg" onclick="syncLocalStorageBills()">Synchronize Data</button></p>
+            </div>
+            <!-------->
+            <div class="tab-pane ms-2 fade" id="v-pills-print-settings" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">
+              <h1>Receipt print settings :</h1>
+              <form>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Shop name</label>
+                  <input type="text" class="form-control" id="shop-name">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Shop address / phone</label>
+                  <input type="text" class="form-control" id="shop-detail">
+                </div>
+                <button type="button" class="btn btn-success" onclick="saveShopDetail()">Save Detail</button>
+                </form>
+            </div>
+          </div>
         </div>
-        <br>
-        <p>Click here to securely sync your valuable data to the cloud.  
-        <button class="btn btn-success btn-lg" onclick="syncLocalStorageBills()">Synchronize Data</button></p>
-        </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Item Sync Modal -->
-<div class="modal fade" id="syncItemModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-fullscreen">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Synchronization Items</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <h1>Get Item From Server:</h1>
-        <p>The server-side item on your computer is synchronized. Internet access is necessary for this operation. </p> 
-        <button type="button" onclick="getItemList()" id="item-sync-btn" class="btn btn-primary"> 
-          Synchronization</button>
-       <hr>
-       
-       <div class="table-responsive">
-        <h3>Synchronizated Item List</h3>
-        <table class="table table-bordered table-striped" id="item-sync-table">
-          <thead>
-            <tr class="font-size-sm table-success">
-              <th width="10%"><center>Sr</center></th>
-              <th width="40%"><center>Item</center></th>
-              <th width="25%"><center>Sale Price</center></th>
-              <th width="25%"><center>Discount%</center></th>
-            </tr>
-          </thead>
-          <tbody id="item-lines-model">
-          </tbody>
-        </table>
-      </div>
       </div>
     </div>
   </div>

@@ -115,7 +115,6 @@ function updateBillLine(_itemCode)
 {
 	for (let i = 0; i < g_newBillLine.length; i++) 
 	{
-	    debugger;
 		v_updated = 0;
 		if (g_newBillLine[i].itemId === _itemCode) 
 		{
@@ -137,6 +136,7 @@ function resetLineFields()
 {
     $( "#itemName").val("");
     $( "#price").val("");
+	$('#price').prop('readonly', false);
     $( "#qty").val("");
     $( "#disc").val("");
     $( "#net").val("");
