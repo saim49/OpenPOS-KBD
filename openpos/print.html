@@ -11,7 +11,8 @@
     body.receipt .sheet { width: 58mm; height: 50mm }
     @media print {
       body.receipt {
-         width: 58mm
+         width: 58mm;
+         font-family: Helvetica, Arial, sans-serif;
       } 
     }
 
@@ -29,13 +30,15 @@
     
     .font
     {
-      font-size: 11px;
+      font-size: 12px;
+      font-family: Helvetica, Arial, sans-serif;
     }
 
     .font-sm
     {
       padding-left: 2px;
-      font-size: 10px;
+      font-size: 11px;
+      font-family: Helvetica, Arial, sans-serif;
     }
 
     .element {
@@ -73,9 +76,9 @@
       {
               if (innerArrayData[i].invoice_code == invoice) 
               {
-                  $('#total-amount').text("  "+innerArrayData[i].invoice_total+"/-"); 
-                  $('#discount-amount').text("  "+innerArrayData[i].invoice_discount+"/-"); 
-                  $('#net-amount').text("  "+innerArrayData[i].invoice_net+"/-"); 
+                  $('#total-amount').text("<center>"+innerArrayData[i].invoice_total+"/-</center>"); 
+                  $('#discount-amount').text("<center>"+innerArrayData[i].invoice_discount+"/-</center>"); 
+                  $('#net-amount').text("<center>"+innerArrayData[i].invoice_net+"/-</center>"); 
                   $('#paym-span').text(innerArrayData[i].payment_mode); 
                   $('#customer-span').text(innerArrayData[i].customer);
                   $('#date-span').text(d);
@@ -140,16 +143,16 @@
       </tbody>
       <tfoot>
         <tr class="font">
-          <th colspan="5" class="element">Total amount</th>
+          <th colspan="4" class="element">Total amount</th>
           <td id="total-amount"><center>10000</center></td>
         </tr>
         <tr class="font">
-          <th colspan="5" class="element">Discount amount</th>
+          <th colspan="4" class="element">Discount amount</th>
           <td id="discount-amount"><center>0</center></td>
         </tr>
         <tr class="font">
-          <th colspan="5" class="element">Net amount</th>
-          <td id="net-amount"><center>9000</center></td>
+          <th colspan="4" class="element">Net amount</th>
+          <td colspan="2" id="net-amount"><center></center></td>
         </tr>
       </tfoot>
     </table>
