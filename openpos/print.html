@@ -31,14 +31,14 @@
     .font
     {
       font-size: 12px;
-      font-family: Helvetica, Arial, sans-serif;
+      font-family: 'Courier New', Courier, monospace;
     }
 
     .font-sm
     {
       padding-left: 2px;
       font-size: 11px;
-      font-family: Helvetica, Arial, sans-serif;
+      font-family: 'Courier New', Courier, monospace;
     }
 
     .element {
@@ -76,9 +76,9 @@
       {
               if (innerArrayData[i].invoice_code == invoice) 
               {
-                  $('#total-amount').text("<center>"+innerArrayData[i].invoice_total+"/-</center>"); 
-                  $('#discount-amount').text("<center>"+innerArrayData[i].invoice_discount+"/-</center>"); 
-                  $('#net-amount').text("<center>"+innerArrayData[i].invoice_net+"/-</center>"); 
+                  $('#total-amount').html("<center>"+innerArrayData[i].invoice_total+"/-</center>"); 
+                  $('#discount-amount').html("<center>"+innerArrayData[i].invoice_discount+"/-</center>"); 
+                  $('#net-amount').html("<center>"+innerArrayData[i].invoice_net+"/-</center>"); 
                   $('#paym-span').text(innerArrayData[i].payment_mode); 
                   $('#customer-span').text(innerArrayData[i].customer);
                   $('#date-span').text(d);
@@ -144,11 +144,11 @@
       <tfoot>
         <tr class="font">
           <th colspan="4" class="element">Total amount</th>
-          <td id="total-amount"><center>10000</center></td>
+          <td colspan="2" id="total-amount"><center></center></td>
         </tr>
         <tr class="font">
           <th colspan="4" class="element">Discount amount</th>
-          <td id="discount-amount"><center>0</center></td>
+          <td  colspan="2" id="discount-amount"><center></center></td>
         </tr>
         <tr class="font">
           <th colspan="4" class="element">Net amount</th>
