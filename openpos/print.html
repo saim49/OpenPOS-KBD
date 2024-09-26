@@ -73,9 +73,9 @@
       {
               if (innerArrayData[i].invoice_code == invoice) 
               {
-                  $('#total-amount').text(innerArrayData[i].invoice_total+"/-"); 
-                  $('#discount-amount').text(innerArrayData[i].invoice_discount+"/-"); 
-                  $('#net-amount').text(innerArrayData[i].invoice_net+"/-"); 
+                  $('#total-amount').text("  "+innerArrayData[i].invoice_total+"/-"); 
+                  $('#discount-amount').text("  "+innerArrayData[i].invoice_discount+"/-"); 
+                  $('#net-amount').text("  "+innerArrayData[i].invoice_net+"/-"); 
                   $('#paym-span').text(innerArrayData[i].payment_mode); 
                   $('#customer-span').text(innerArrayData[i].customer);
                   $('#date-span').text(d);
