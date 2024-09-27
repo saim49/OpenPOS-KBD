@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/paper.css">
   <script src="js/jquery-3.7.1.min.js"></script>
+  <script src="js/JsBarcode.all.min.js"></script>
   <style>
     @page { size: portrait }
     body.receipt .sheet { width: 58mm; height: 50mm }
@@ -30,21 +31,33 @@
     
     .font
     {
-      font-size: 12px;
+      font-size: 11px;
       font-family: 'Courier New', Courier, monospace;
     }
 
     .font-sm
     {
       padding-left: 2px;
-      font-size: 11px;
+      font-size: 10px;
       font-family: 'Courier New', Courier, monospace;
+    }
+
+    .font-head
+    {
+      font-size: 11px;
+    }
+
+    .font-sm-head
+    {
+      padding-left: 2px;
+      font-size: 9px;
     }
 
     .element {
       padding-right: 0px;
       padding-left: 50px;
 }
+
   </style>
 </head>
 <script>
@@ -69,6 +82,15 @@
     }
 
     $('#invoice-span').text(invoice);
+
+    JsBarcode("#barcode", invoice, {
+            format: "CODE39", // You can change the format if needed
+            displayValue: false, // Display the text value below the barcode
+            fontSize: 9,
+            width: 0.9,
+            height: 35,
+            margin: 0
+        });
     for (let i = 0; i <= invoicesData.length; i++) 
     {
         var innerArrayData = invoicesData[i];
@@ -76,15 +98,16 @@
       {
               if (innerArrayData[i].invoice_code == invoice) 
               {
-                  $('#total-amount').html("<center>"+innerArrayData[i].invoice_total+"/-</center>"); 
-                  $('#discount-amount').html("<center>"+innerArrayData[i].invoice_discount+"/-</center>"); 
-                  $('#net-amount').html("<center>"+innerArrayData[i].invoice_net+"/-</center>"); 
+                  $('#total-amount').html("<center><b>"+innerArrayData[i].invoice_total+"</b></center>"); 
+                  $('#discount-amount').html("<center><b>"+innerArrayData[i].invoice_discount+"</b></center>"); 
+                  $('#net-amount').html("<center><b>"+innerArrayData[i].invoice_net+"</b></center>"); 
                   $('#paym-span').text(innerArrayData[i].payment_mode); 
                   $('#customer-span').text(innerArrayData[i].customer);
                   $('#date-span').text(d);
                   $('#shop-name-span').text(shopName);
                   $('#shop-detail-span').text(shopDetail);
                   
+          
                   var v_cell1,v_cell2,v_cell3,v_cell4,v_row,v_rowNum, 
                   v_table;
                   //-------
@@ -95,11 +118,11 @@
                       v_rowNum 		= j+1;
                       v_html += "<tr class='font'>";
                       v_html += "<td><center>"+v_rowNum+"</center></td>";
-                      v_html += "<td class='font-sm'>"+rows.itemName+"</center></td>";
-                      v_html += "<td class='font-sm'>"+rows.price+"</center></td>";
+                      v_html += "<td class='font-sm'><center>"+rows.itemName+"</center></td>";
+                      v_html += "<td class='font-sm'><center>"+rows.price+"</center></td>";
                       v_html += "<td><center>"+rows.qty+"</center></td>";
                       v_html += "<td><center>"+rows.disc+"</center></td>";
-                      v_html += "<td><center>"+((Number(rows.qty) * Number(rows.price))-Number(rows.disc))+"/-</td>";
+                      v_html += "<td><center>"+((Number(rows.qty) * Number(rows.price))-Number(rows.disc))+"</td>";
                       v_html += "</tr>";
         
                   });
@@ -107,7 +130,7 @@
                   $("#bill-table-body").html(v_html);
                   
                   window.print();
-                  window.close();
+                  //window.close();
                   break;
               }
             }
@@ -121,43 +144,44 @@
       <hr>
     <center>
         <h4 class="nopmh" id="shop-name-span"> Khokhar book depot</h4>
-        <p class="nopmh font" id="shop-detail-span"> Khokhar book depot</p>
+        <p class="nopmh font-head" id="shop-detail-span"> Khokhar book depot</p>
     </center>
     <hr>
-    <p class="nopm font"><b> Invoice number#:</b> <span id="invoice-span">01-06022024-004</span></p>
-    <p class="nopm font"><b> Date time:</b> <span id="date-span"></span></p>
-    <p class="nopm font"><b> Payment mode:</b> <span id="paym-span"></span></p>
-    <p class="nopm font"><b> Customer detail:</b> <span id="customer-span"></span></p>
-    <table border="1" width="99%" id="bill-table">
+    <svg id="barcode"></svg>
+    <p class="nopm font-head"><b> Invoice number#:</b> <span id="invoice-span">01-06022024-004</span></p>
+    <p class="nopm font-head"><b> Date time:</b> <span id="date-span"></span></p>
+    <p class="nopm font-head"><b> Payment mode:</b> <span id="paym-span"></span></p>
+    <p class="nopm font-head"><b> Customer detail:</b> <span id="customer-span"></span></p>
+    <table border="1" width="100%" id="bill-table">
       <thead>
       <tr>
-        <th class="font" width="8%">Sr</th>
-        <th class="font" width="50%">Item</th>
-        <th class="font" width="15%">Price</th>
-        <th class="font" width="10%">Qty</th>
-        <th class="font" width="10%">Disc</th>
-        <th class="font" width="18%">Total</th>
+        <th class="font-sm-head" width="5%">Sr</th>
+        <th class="font-sm-head" width="50%">Item</th>
+        <th class="font-sm-head" width="12%">Amt</th>
+        <th class="font-sm-head" width="9%">Qty</th>
+        <th class="font-sm-head" width="9%">Disc</th>
+        <th class="font-sm-head" width="15%">Net</th>
       </tr>
       </thead>
       <tbody  id="bill-table-body">
       </tbody>
       <tfoot>
         <tr class="font">
-          <th colspan="4" class="element">Total amount</th>
+          <th colspan="4" class="element">Total</th>
           <td colspan="2" id="total-amount"><center></center></td>
         </tr>
         <tr class="font">
-          <th colspan="4" class="element">Discount amount</th>
+          <th colspan="4" class="element">Discount</th>
           <td  colspan="2" id="discount-amount"><center></center></td>
         </tr>
         <tr class="font">
-          <th colspan="4" class="element">Net amount</th>
+          <th colspan="4" class="element">Net</th>
           <td colspan="2" id="net-amount"><center></center></td>
         </tr>
       </tfoot>
     </table>
-    <center><p class="nopm font-sm"><b>Thank you for shopping.</p></center>
+    <center><p class="nopm font-sm-head"><b>***THANK YOU***</p></center>
     <hr>
-    <center><p class="nopm font"><b>Atta son's (Saimtech)</p></center>
+    <center><p class="nopm font-head"><b>Atta son's (Saimtech)</p></center>
   </section>
 </body>
