@@ -45,12 +45,14 @@
     .font-head
     {
       font-size: 11px;
+      font-family: 'Courier New', Courier, monospace;
     }
 
     .font-sm-head
     {
       padding-left: 2px;
       font-size: 9px;
+      font-family: 'Courier New', Courier, monospace;
     }
 
     .element {
@@ -84,10 +86,9 @@
     $('#invoice-span').text(invoice);
 
     JsBarcode("#barcode", invoice, {
-            format: "CODE39", // You can change the format if needed
-            displayValue: false, // Display the text value below the barcode
+            displayValue: true, // Display the text value below the barcode
             fontSize: 9,
-            width: 0.9,
+            width: 1,
             height: 35,
             margin: 0
         });
@@ -147,7 +148,7 @@
         <p class="nopmh font-head" id="shop-detail-span"> Khokhar book depot</p>
     </center>
     <hr>
-    <svg id="barcode"></svg>
+    <svg id="barcode" width="99%"></svg>
     <p class="nopm font-head"><b> Invoice number#:</b> <span id="invoice-span">01-06022024-004</span></p>
     <p class="nopm font-head"><b> Date time:</b> <span id="date-span"></span></p>
     <p class="nopm font-head"><b> Payment mode:</b> <span id="paym-span"></span></p>
