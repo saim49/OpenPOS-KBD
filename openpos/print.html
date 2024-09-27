@@ -31,27 +31,27 @@
     
     .font
     {
-      font-size: 11px;
+      font-size: 12px;
       font-family: 'Courier New', Courier, monospace;
     }
 
     .font-sm
     {
       padding-left: 2px;
-      font-size: 10px;
+      font-size: 11px;
       font-family: 'Courier New', Courier, monospace;
     }
 
     .font-head
     {
-      font-size: 11px;
+      font-size: 12px;
       font-family: 'Courier New', Courier, monospace;
     }
 
     .font-sm-head
     {
       padding-left: 2px;
-      font-size: 9px;
+      font-size: 11px;
       font-family: 'Courier New', Courier, monospace;
     }
 
@@ -87,9 +87,9 @@
 
     JsBarcode("#barcode", invoice, {
             displayValue: true, // Display the text value below the barcode
-            fontSize: 9,
-            width: 1,
-            height: 35,
+            fontSize: 11,
+            width: 1.3,
+            height: 50,
             margin: 0
         });
     for (let i = 0; i <= invoicesData.length; i++) 
@@ -99,9 +99,9 @@
       {
               if (innerArrayData[i].invoice_code == invoice) 
               {
-                  $('#total-amount').html("<center><b>"+innerArrayData[i].invoice_total+"</b></center>"); 
-                  $('#discount-amount').html("<center><b>"+innerArrayData[i].invoice_discount+"</b></center>"); 
-                  $('#net-amount').html("<center><b>"+innerArrayData[i].invoice_net+"</b></center>"); 
+                  $('#total-amount').html("<center>"+innerArrayData[i].invoice_total+"</center>"); 
+                  $('#discount-amount').html("<center>"+innerArrayData[i].invoice_discount+"</center>"); 
+                  $('#net-amount').html("<center>"+innerArrayData[i].invoice_net+"</center>"); 
                   $('#paym-span').text(innerArrayData[i].payment_mode); 
                   $('#customer-span').text(innerArrayData[i].customer);
                   $('#date-span').text(d);
@@ -149,11 +149,11 @@
     </center>
     <hr>
     <svg id="barcode" width="99%"></svg>
-    <p class="nopm font-head"><b> Invoice number#:</b> <span id="invoice-span">01-06022024-004</span></p>
-    <p class="nopm font-head"><b> Date time:</b> <span id="date-span"></span></p>
-    <p class="nopm font-head"><b> Payment mode:</b> <span id="paym-span"></span></p>
-    <p class="nopm font-head"><b> Customer detail:</b> <span id="customer-span"></span></p>
-    <table border="1" width="100%" id="bill-table">
+    <p class="nopm font-head"><b> Invoice No:</b> <span id="invoice-span">01-06022024-004</span></p>
+    <p class="nopm font-sm-head"><b> DateTime:</b> <span id="date-span"></span></p>
+    <p class="nopm font-head"><b> Payment Mode:</b> <span id="paym-span"></span></p>
+    <p class="nopm font-head"><b> Customer:</b> <span id="customer-span"></span></p>
+    <table border="1" width="99%" id="bill-table">
       <thead>
       <tr>
         <th class="font-sm-head" width="5%">Sr</th>
