@@ -15,10 +15,6 @@ var 	endpoint = "https://logisticasaan365.com/poslite/api/";
 var     g_itemArray = [];
 
 
-
-
-
-
 //Author: Muhammad Saim
 //Method: get item list from server.
 function getItemList()
@@ -61,6 +57,7 @@ function drawItemTable()
 		v_html 	+= '<td><center>'+rows.name+'</center></td>';
 		v_html 	+= '<td><center>'+rows.price+'/-</center></td>';
 		v_html 	+= '<td><center>'+rows.disc+'%</center></td>';
+		v_html 	+= '<td><center>'+rows.barcode+'</center></td>';
 		v_html 	+= '</tr>';
 	});
 	$('#item-lines-model').html(v_html);
@@ -626,14 +623,13 @@ function syncLocalStorageBills()
     			success: 
     			function(data)
     			{ 
-				
     				var dataafter = JSON.parse(data);
     				if (dataafter.status == 200)
     				{
-						
     					 localStorage.setItem("invoicesData", "");
     					 $("#device-status").html("All data is uploaded on the saimtech cloud. :)");
     					 $("#cloud-status").html("<center>"+Number(bill.length - 1) + " Invoices are uploaded on the saimtech cloud.</center>");
+						 zeroNodeDefaultData();
     				}
 					else if (dataafter.status == 401)
 					{

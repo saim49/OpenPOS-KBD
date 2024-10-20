@@ -10,6 +10,7 @@
         zeroNodeDefaultData();
         setInterval(updateDateTimeNavSpan, 100);
         getUniqueCode();
+        drawItemTable();
         $("#memory-status").val(getLocalStorageSize());
         $("#shop-name").val(localStorage.getItem('shopName'));
         $("#shop-detail").val(localStorage.getItem('shopDetail'));
@@ -80,6 +81,31 @@
         };
     //--------------------------------------
       });
+
+      
+  function searchItemsBarcode() {
+    var filter = $('#itemName').val();
+    const qty = 1;
+		if (filter)
+    {
+      let items = JSON.parse(localStorage.getItem('itemData')) || [];
+      
+			filter = filter.toLowerCase();
+			items = items.filter(item => item.barcode.toLowerCase().includes(filter));
+      items.forEach(item => {
+        if (item.barcode)
+        {
+          $('#itemName').val(item.name);
+          $('#price').val(item.price);
+          simpleBillLineNet();
+          $('#qty').val(qty);
+          $('#disc').val(0);
+          simpleSaveBillLine();
+        }
+		  });
+    }
+	}
+
   </script>
   
   <script id="allow-copy_script">(function agent() {
@@ -414,7 +440,7 @@
           </tr>
           <tr class="table-secondary">
             <td scope="row" colspan="2">
-                <input type="text"  placeholder="Enter item" class="form-control" id="itemName" tabindex="1">
+                <input type="text"  placeholder="Enter item" class="form-control" id="itemName" tabindex="1" onblur="searchItemsBarcode()">
             </td>
             <td><input type="number" class="form-control" id="price" placeholder="Price" tabindex="2" onkeyup="simpleBillLineNet();"></td>
             <td><input type="number" class="form-control" id="qty" placeholder="Qty" tabindex="3" onkeyup="simpleBillLineNet();"></td>
@@ -530,6 +556,7 @@
                       <th width="40%"><center>Item</center></th>
                       <th width="25%"><center>Sale Price</center></th>
                       <th width="25%"><center>Discount%</center></th>
+                      <th width="25%"><center>Barcode</center></th>
                     </tr>
                   </thead>
                   <tbody id="item-lines-model">
