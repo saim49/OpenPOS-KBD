@@ -341,8 +341,10 @@ function simpleSaveBillLine()
 		for (let i = 0; i < g_newBillLine.length; i++) 
 		{
   			v_updated = 0;
+
+			
   		
-    		if (g_newBillLine[i].itemId === v_itemId && g_newBillLine[i].price === v_price) 
+    		if (g_newBillLine[i].itemName === v_itemName && g_newBillLine[i].price === v_price) 
 			{
 			    
 		        g_newBillLine[i].qty 		= (Number(g_newBillLine[i].qty) + Number(v_qty));
